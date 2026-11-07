@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tfdrift</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1>tfdrift</h1>
+      <span class="sub">Terraform state vs live infrastructure</span>
+    </div>
+    <span id="status" class="muted"></span>
+  </header>
+
+  <main>
+    <section>
+      <h2>Workspaces</h2>
+      <div id="workspaces" class="cards"><p class="muted">Loading…</p></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Scan history</h2>
+        <select id="history-filter" aria-label="Filter by workspace">
+          <option value="">All workspaces</option>
+        </select>
+      </div>
+      <div class="table-wrap"><table id="scans">
+        <thead><tr>
+          <th>Started</th><th>Workspace</th><th>Status</th>
+          <th class="num">Deleted</th><th class="num">Modified</th><th class="num">Tags</th>
+          <th class="num">Unmanaged</th><th class="num">Errors</th><th class="num">Duration</th>
+        </tr></thead>
+        <tbody><tr><td colspan="9" class="muted">Loading…</td></tr></tbody>
+      </table></div>
+    </section>
+
+    <section id="report" hidden>
+      <div class="section-head">
+        <h2>Report <code id="report-id"></code></h2>
+        <div class="actions">
+          <a id="report-json" target="_blank" rel="noopener">JSON</a>
+          <a id="report-text" target="_blank" rel="noopener">Text</a>
+          <button type="button" class="ghost" id="report-close">Close</button>
+        </div>
+      </div>
+      <p id="report-meta" class="muted"></p>
+      <div id="tiles" class="tiles"></div>
+      <div id="kind-filter" class="chips" role="group" aria-label="Filter by kind"></div>
+      <div id="drifts"></div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

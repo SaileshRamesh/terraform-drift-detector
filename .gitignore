@@ -1,0 +1,18 @@
+# Build output
+/bin/
+*.test
+*.out
+coverage.*
+
+# Local config, reports and history
+drift.yaml
+*.json
+!testdata/*.json
+*.db
+*.db-shm
+*.db-wal
+.env
+
+.DS_Store
+go.work
+go.work.sum
