@@ -5,6 +5,7 @@ import (
 	"path"
 	"reflect"
 	"sort"
+	"strings"
 
 	"github.com/saileshramesh/terraform-drift-detector/internal/model"
 )
@@ -15,6 +16,10 @@ type Ignore struct {
 	Type       string   `yaml:"type" json:"type"`
 	Attributes []string `yaml:"attributes" json:"attributes"`
 }
+
+// awsReservedTagPrefix marks tags that AWS services set (CloudFormation, Auto
+// Scaling...). Users and Terraform cannot write them, so they are never drift.
+const awsReservedTagPrefix = "aws:"
 
 // highRiskTypes get high severity for attribute drift because changes to
 // them usually alter the security posture.
@@ -77,7 +82,7 @@ func (d *Differ) tagChanges(expected, actual *model.Resource) []model.Change {
 	var changes []model.Change
 	for _, k := range unionKeys(expected.Tags, actual.Tags) {
 		p := "tags." + k
-		if d.ignored(expected.Type, p) {
+		if strings.HasPrefix(k, awsReservedTagPrefix) || d.ignored(expected.Type, p) {
 			continue
 		}
 		e, eok := expected.Tags[k]

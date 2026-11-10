@@ -71,6 +71,8 @@ See [`examples/drift.yaml`](examples/drift.yaml). In short:
   API/CLI; edit the file instead. Workspaces created through the API are
   stored in the database.
 - **Ignore rules**: glob patterns per resource type; tags are `tags.<key>`.
+  AWS-reserved `aws:*` tags (CloudFormation, Auto Scaling...) are always
+  skipped, since neither users nor Terraform can set them.
 
 ## Drift kinds
 

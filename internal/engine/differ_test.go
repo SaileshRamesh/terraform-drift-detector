@@ -64,6 +64,16 @@ func TestCompare(t *testing.T) {
 		}
 	})
 
+	t.Run("aws reserved tags skipped", func(t *testing.T) {
+		actual := resource(expected.Attributes, map[string]string{
+			"Env": "prod", "Owner": "alice", "LastSeen": "x",
+			"aws:cloudformation:stack-name": "net", "aws:autoscaling:groupName": "web",
+		})
+		if d := NewDiffer(nil).Compare(expected, actual); len(d) != 0 {
+			t.Fatalf("aws:* tags must not count as drift without ignore rules: %+v", d)
+		}
+	})
+
 	t.Run("ignore scoped by type", func(t *testing.T) {
 		actual := resource(map[string]any{"instance_type": "t3.large", "sgs": []string{"sg-1"}}, expected.Tags)
 		d := NewDiffer([]Ignore{{Type: "aws_s3_*", Attributes: []string{"instance_type"}}}).Compare(expected, actual)
